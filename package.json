@@ -1,0 +1,30 @@
+{
+  "name": "electron",
+  "version": "1.0.0",
+  "description": "Electron + React + Typescript",
+  "main": "./dist/main.bundle.js",
+  "author": "Evgeny Kurochkin",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron ./dist/main.bundle.js",
+    "build": "rimraf dist && webpack --config ./webpack.dev.js --progress --colors",
+    "dev": "yarn build && yarn start"
+  },
+  "dependencies": {
+    "electron": "^4.0.4",
+    "html-webpack-plugin": "^3.2.0",
+    "mobx": "^5.9.0",
+    "mobx-react": "^5.4.3",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "rimraf": "^2.6.3",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.3.3",
+    "webpack": "^4.29.3",
+    "webpack-cli": "^3.2.3"
+  },
+  "devDependencies": {
+    "@types/react": "^16.8.3",
+    "@types/react-dom": "^16.8.1"
+  }
+}
