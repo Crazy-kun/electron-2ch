@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { IStore } from "../store";
+import Button from "antd/lib/button";
+import { List, Avatar } from "antd";
+import { IStore, IThread } from "../store";
 
 interface IProps {
     store?: IStore;
@@ -16,32 +18,44 @@ class Board extends Component<IProps> {
         const { board } = this.props.store!;
         return (
             <div>
-                <button
-                    onClick={this.props.store!.setBoard}
-                    className="btn btn-primary"
-                >
-                    Update
-                </button>
-                <ul className="list-group">
-                    {board &&
-                        board.threads.map(thread => {
-                            return (
-                                <li
-                                    className="list-group-item"
-                                    key={thread.num}
-                                >
-                                    {thread.subject}
-                                    <button
-                                        className="btn btn-primary btn-sm"
-                                        id={thread.num}
-                                        onClick={this.buttonClick}
-                                    >
-                                        Open
-                                    </button>
-                                </li>
-                            );
-                        })}
-                </ul>
+                {board && (
+                    <List
+                        bordered
+                        dataSource={board.threads}
+                        renderItem={(thread: IThread) => (
+                            <List.Item>
+                                <List.Item.Meta
+                                    title={
+                                        <Button
+                                            type="primary"
+                                            id={thread.num}
+                                            onClick={this.buttonClick}
+                                        >
+                                            Open
+                                        </Button>
+                                    }
+                                    avatar={
+                                        thread.files.length && (
+                                            <Avatar
+                                                src={
+                                                    "https://2ch.hk" +
+                                                    thread.files[0].path
+                                                }
+                                            />
+                                        )
+                                    }
+                                    description={
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: thread.comment
+                                            }}
+                                        />
+                                    }
+                                />
+                            </List.Item>
+                        )}
+                    />
+                )}
             </div>
         );
     }

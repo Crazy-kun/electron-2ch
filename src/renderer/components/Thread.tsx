@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { IStore } from "../store";
+import Button from "antd/lib/button";
+import { List, Avatar } from "antd";
+import { IStore, IPost } from "../store";
 
 interface IProps {
     store?: IStore;
@@ -10,31 +12,45 @@ interface IProps {
 @observer
 class Thread extends Component<IProps> {
     buttonClick = () => {
-        this.props.store!.changeState("board");
+        this.props.store!.setBoard();
     };
     render() {
         const { thread } = this.props.store;
-        const posts = thread && thread.threads[0].posts;
+        const posts = thread && thread.posts;
         return (
             <div>
-                <button onClick={this.buttonClick} className="btn btn-primary">
+                <Button type="primary" onClick={this.buttonClick}>
                     Back
-                </button>
-                <ul className="list-group">
-                    {posts &&
-                        posts &&
-                        posts.map((post: any) => {
-                            return (
-                                <li
-                                    className="list-group-item"
-                                    key={post.num}
-                                    dangerouslySetInnerHTML={{
-                                        __html: post.comment
-                                    }}
-                                />
-                            );
-                        })}
-                </ul>
+                </Button>
+
+                <List
+                    bordered
+                    dataSource={posts}
+                    renderItem={(post: IPost) => (
+                        <List.Item>
+                            <List.Item.Meta
+                                title={post.date}
+                                avatar={
+                                    post.files.length && (
+                                        <Avatar
+                                            src={
+                                                "https://2ch.hk" +
+                                                post.files[0].path
+                                            }
+                                        />
+                                    )
+                                }
+                                description={
+                                    <div
+                                        dangerouslySetInnerHTML={{
+                                            __html: post.comment
+                                        }}
+                                    />
+                                }
+                            />
+                        </List.Item>
+                    )}
+                />
             </div>
         );
     }
